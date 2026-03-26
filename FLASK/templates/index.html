@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <p>Flask app is working!</p>
+    <form method="post" action="/">
+        <input type="submit" value="Click Action " name="action1"/>
+        <input type="submit" value="Click Action 2" name="action2" />
+    </form>
+    <p>{{ displayednumber }}</p>
+    <img src="static/{{ shown }}" alt="pos/neg">
+    <br>
+    <br>
+    <form method="post" action="/">
+        <input type="submit" value="Click Action 3" name="action3"/>
+    </form>
+    <p>{{ truefalse }}</p>
+    <br>
+    <br>
+    <form method="post" action="/">
+        <input type="submit" value="Twos" name="action4"/>
+        <input type="submit" value="Threes" name="action5"/>
+        <input type="submit" value="Fours" name="action6"/>
+        <br>
+        <input type="submit" value="Clubs" name="action7"/>
+        <input type="submit" value="Spades" name="action8"/>
+        <input type="submit" value="Hearts" name="action9"/>
+    </form>
+    <h3>Filtered Images:</h3>
+    <p>{{ filteringfor }}</p>
+    <br>
+    {% for img in filteredimages %}
+        <img src="static/{{ img }}" style="max-width: 100px; margin: 5px;" alt="{{ img }}">
+    {% endfor %}
+</body>
+</html>
