@@ -8,18 +8,17 @@
 <body>
     <h1>{{ title }}</h1>
     <p>Flask app is working!</p>
-    <form method="post" action="/">
-        <input type="submit" value="Click Action " name="action1"/>
-        <input type="submit" value="Click Action 2" name="action2" />
-    </form>
-    <p>{{ displayednumber }}</p>
-    <img src="static/{{ shown }}" alt="pos/neg">
     <br>
     <br>
     <form method="post" action="/">
-        <input type="submit" value="Click Action 3" name="action3"/>
+        <input type="submit" value="SORT BY TEST (TYPE/COUNT)" name="action3"/>
     </form>
-    <p>{{ truefalse }}</p>
+    <p>{{ orderedby.upper() }}</p>
+    <br>
+    <form method="post" action="/">
+        <input type="submit" value="SORT BY TEST (ORDER)" name="action10"/>
+    </form>
+    <p>{{ ascdesc }}</p>
     <br>
     <br>
     <form method="post" action="/">
@@ -33,6 +32,11 @@
     </form>
     <h3>Filtered Images:</h3>
     <p>{{ filteringfor }}</p>
+    <br>
+    <form method="post" action="/">
+        <input type="text" name="searchbar" placeholder="Does nothing right now..." value="">
+        <input type="submit" value="Search">
+    </form>
     <br>
     {% for img in filteredimages %}
         <img src="static/{{ img }}" style="max-width: 100px; margin: 5px;" alt="{{ img }}">

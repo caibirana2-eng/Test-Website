@@ -4,33 +4,23 @@ import sqlite3
 app = Flask(__name__)
 
 number = 0
-ft = 'false'
 
 false = ['twos', 'threes', 'fours', 'clubs', 'spades', 'hearts']
 
-con = sqlite3.connect("database.db")
-cur = con.cursor()
-cur.execute("SELECT * FROM card_data")
-cardsdata = cur.fetchall()
-con.close()
-
-formattedcardsdata = [tuple(row) for row in cardsdata]
+orderby = 'type'
+direction = 'DESC'
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    global number, ft, false, formattedcardsdata
-    page_title = "Hi!"
+    global number, direction, false, orderby
+    page_title = 'Hi!'
     if request.method == 'POST':
-        if 'action1' in request.form:
-            number += 1
-        elif 'action2' in request.form:
-            number -= 1
-        elif 'action3' in request.form:
-            if ft == 'true':
-                ft = 'false'
+        if 'action3' in request.form:
+            if orderby == 'count':
+                orderby = 'type'
             else:
-                ft = 'true'
-        elif 'action4' in request.form:
+                orderby = 'count'
+        if 'action4' in request.form:
             if 'twos' in false:
                 false.remove('twos')
             else:
@@ -60,10 +50,17 @@ def index():
                 false.remove('hearts')
             else:
                 false.append('hearts')
-    if number < 0:
-        shownthing = 'wenbo.png'
-    else:
-        shownthing = 'bobo.png'
+        elif 'action10' in request.form:
+            if direction == 'DESC':
+                direction = 'ASC'
+            else:
+                direction = 'DESC'
+    con = sqlite3.connect('database.db')
+    cur = con.cursor()
+    cur.execute(f'SELECT * FROM card_data ORDER BY {orderby} {direction}')
+    cardsdata = cur.fetchall()
+    con.close()
+    formattedcardsdata = [tuple(row) for row in cardsdata]
     filterfor = ['twos', 'threes', 'fours', 'clubs', 'spades', 'hearts']
     for items in false:
         filterfor.remove(f'{items}')
@@ -72,12 +69,9 @@ def index():
     sentimages = []
     for data in formattedcardsdata:
         for category in data:
-            if category in filterfor:
-                sentimages.append(data[0])
-    sortedsentimages = sorted(sentimages)
-    sentimages = set(sortedsentimages)
-
-    return render_template('index.html', title=page_title, displayednumber=number, shown=shownthing, truefalse=ft, filteredimages=sentimages, filteringfor=filterfor)
+            if category in filterfor and data[0] not in sentimages:
+                sentimages.append(data[0])       
+    return render_template('index.html', title=page_title, orderedby=orderby, filteredimages=sentimages, filteringfor=filterfor, ascdesc=direction)
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=5000, debug=True)
